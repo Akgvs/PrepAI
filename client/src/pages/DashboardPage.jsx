@@ -8,8 +8,10 @@ import {
   CheckCircle2,
   ArrowRight,
   Layers,
+  FileText,
 } from 'lucide-react';
 import interviewService from '../services/interview.service.js';
+import resumeService from '../services/resume.service.js';
 import useUsageQuota from '../hooks/useUsageQuota.js';
 import Button from '../components/common/Button.jsx';
 import Badge from '../components/common/Badge.jsx';
@@ -18,14 +20,19 @@ import ProgressBar from '../components/common/ProgressBar.jsx';
 const DashboardPage = () => {
   const navigate = useNavigate();
   const [interviews, setInterviews] = useState([]);
+  const [resumes, setResumes] = useState([]);
   const [loading, setLoading] = useState(true);
   const { usageData, plan, isPaid } = useUsageQuota();
 
-  const fetchInterviews = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await interviewService.getAll();
-      setInterviews(res.data || []);
+      const [intRes, resRes] = await Promise.all([
+        interviewService.getAll(),
+        resumeService.getAll()
+      ]);
+      setInterviews(intRes.data || []);
+      setResumes(resRes.data || []);
     } catch {
       // Ignored
     } finally {
@@ -34,8 +41,8 @@ const DashboardPage = () => {
   }, []);
 
   useEffect(() => {
-    fetchInterviews();
-  }, [fetchInterviews]);
+    fetchData();
+  }, [fetchData]);
 
   const completedSessions = interviews.filter((i) => i.status === 'completed');
   const scores = completedSessions
@@ -114,6 +121,18 @@ const DashboardPage = () => {
             <span className="text-xs text-slate-400 font-medium block">Average Score</span>
             <span className="text-2xl font-bold font-heading text-white">
               {averageScore !== '—' ? `${averageScore}/10` : '—'}
+            </span>
+          </div>
+        </div>
+
+        <div className="glass-panel rounded-2xl p-5 border border-white/10 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-400 flex items-center justify-center shrink-0">
+            <FileText className="h-6 w-6" />
+          </div>
+          <div>
+            <span className="text-xs text-slate-400 font-medium block">Resumes Built</span>
+            <span className="text-2xl font-bold font-heading text-white">
+              {resumes.length}
             </span>
           </div>
         </div>
@@ -251,6 +270,96 @@ const DashboardPage = () => {
                   )}
                   <Button variant="secondary" size="sm" icon={ArrowRight} iconPosition="right">
                     {item.status === 'completed' ? 'Feedback' : 'Resume'}
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Recent Resumes Widget */}
+      <div className="glass-panel rounded-2xl p-6 sm:p-8 border border-white/10">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-xl font-bold font-heading text-white">
+              Recent Resumes
+            </h2>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Access your saved ATS-optimized resumes.
+            </p>
+          </div>
+
+          <Link to="/dashboard/resumes">
+            <Button variant="ghost" size="sm" icon={ArrowRight} iconPosition="right">
+              View All
+            </Button>
+          </Link>
+        </div>
+
+        {loading ? (
+          <div className="py-12 text-center text-sm text-slate-400">
+            Loading recent resumes...
+          </div>
+        ) : resumes.length === 0 ? (
+          <div className="text-center py-10 border border-dashed border-slate-700/80 rounded-2xl">
+            <FileText className="h-10 w-10 text-slate-500 mx-auto mb-2" />
+            <p className="text-sm text-slate-300 font-medium">No resumes built yet</p>
+            <p className="text-xs text-slate-500 mb-4">
+              Stand out with an AI-powered, ATS-friendly resume.
+            </p>
+            <Button
+              onClick={() => navigate('/dashboard/resumes')}
+              variant="primary"
+              size="sm"
+              icon={FileText}
+            >
+              Build Resume
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {resumes.slice(0, 4).map((item) => (
+              <div
+                key={item._id}
+                onClick={() => navigate(`/dashboard/resumes/${item._id}`)}
+                className="glass-panel-interactive rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer"
+              >
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-mono uppercase text-teal-400">
+                      {item.status === 'scored' ? 'Scored' : 'Draft'}
+                    </span>
+                    {item.atsScore?.overall >= 80 ? (
+                      <Badge variant="emerald" size="sm">Highly Optimized</Badge>
+                    ) : item.atsScore?.overall >= 60 ? (
+                      <Badge variant="amber" size="sm">Needs Work</Badge>
+                    ) : null}
+                  </div>
+                  <h3 className="text-base font-bold text-white font-heading">
+                    {item.title}
+                  </h3>
+                  <div className="flex items-center gap-3 text-xs text-slate-400 mt-1">
+                    <span>{item.targetRole || 'No Target Role'}</span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      Updated: {new Date(item.updatedAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  {item.atsScore?.overall !== null && item.atsScore?.overall !== undefined && (
+                    <div className="text-right">
+                      <span className="text-xs text-slate-400 block">ATS Score</span>
+                      <span className="text-lg font-bold text-emerald-400">
+                        {item.atsScore.overall}%
+                      </span>
+                    </div>
+                  )}
+                  <Button variant="secondary" size="sm" icon={ArrowRight} iconPosition="right">
+                    Edit
                   </Button>
                 </div>
               </div>

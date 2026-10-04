@@ -7,6 +7,8 @@ const FIELD_MAP = {
   interviewsGenerated: 'interviewsGenerated',
   answers: 'answersEvaluated',
   answersEvaluated: 'answersEvaluated',
+  resumes: 'resumesCreated',
+  resumesCreated: 'resumesCreated',
 };
 
 export const normalizeUsageField = (field) => {
@@ -110,6 +112,7 @@ export const getUserUsageSummary = async (clerkUserId, plan = 'free') => {
 
   const interviewsLimit = limits.interviewsGenerated === Infinity ? null : limits.interviewsGenerated;
   const answersLimit = limits.answersEvaluated === Infinity ? null : limits.answersEvaluated;
+  const resumesLimit = limits.resumesCreated === Infinity ? null : limits.resumesCreated;
   const isUnlimited = plan === 'paid' || limits.interviewsGenerated === Infinity;
 
   return {
@@ -118,10 +121,12 @@ export const getUserUsageSummary = async (clerkUserId, plan = 'free') => {
     limits: {
       interviewsGenerated: interviewsLimit,
       answersEvaluated: answersLimit,
+      resumesCreated: resumesLimit,
     },
     usage: {
       interviewsGenerated: usageDoc.interviewsGenerated || 0,
       answersEvaluated: usageDoc.answersEvaluated || 0,
+      resumesCreated: usageDoc.resumesCreated || 0,
     },
     remaining: {
       interviewsGenerated: isUnlimited
@@ -130,6 +135,9 @@ export const getUserUsageSummary = async (clerkUserId, plan = 'free') => {
       answersEvaluated: isUnlimited
         ? null
         : Math.max(0, (answersLimit || 50) - (usageDoc.answersEvaluated || 0)),
+      resumesCreated: isUnlimited
+        ? null
+        : Math.max(0, (resumesLimit || 3) - (usageDoc.resumesCreated || 0)),
     },
     month,
     year,

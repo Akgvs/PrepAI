@@ -22,6 +22,7 @@ export const QUESTION_COUNTS = [3, 5, 7, 10];
 
 export const NAV_LINKS = [
   { name: 'Mock Interviews', path: '/dashboard/mocks' },
+  { name: 'ATS Resumes', path: '/dashboard/resumes' },
   { name: 'Pricing', path: '/pricing' },
 ];
 

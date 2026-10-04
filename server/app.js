@@ -7,8 +7,9 @@ import { clerkMiddleware } from '@clerk/express';
 import { generalLimiter } from './middleware/rateLimiter.middleware.js';
 import errorHandler from './middleware/errorHandler.middleware.js';
 
-// Route imports for AI Mock Interview & Usage
+// Route imports for AI Mock Interview, Resumes & Usage
 import interviewRoutes from './routes/interview.routes.js';
+import resumeRoutes from './routes/resume.routes.js';
 import usageRoutes from './routes/usage.routes.js';
 
 const app = express();
@@ -69,6 +70,7 @@ if (hasClerkKeys) {
 // ----------------------------
 
 app.use('/api/interviews', interviewRoutes);
+app.use('/api/resumes', resumeRoutes);
 app.use('/api/usage', usageRoutes);
 
 // Health check
