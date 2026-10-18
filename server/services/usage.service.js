@@ -9,6 +9,8 @@ const FIELD_MAP = {
   answersEvaluated: 'answersEvaluated',
   resumes: 'resumesCreated',
   resumesCreated: 'resumesCreated',
+  quizzes: 'quizzesGenerated',
+  quizzesGenerated: 'quizzesGenerated',
 };
 
 export const normalizeUsageField = (field) => {

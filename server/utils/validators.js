@@ -37,3 +37,34 @@ export const submitAnswerSchema = Joi.object({
     'string.min': 'Answer must be at least 2 characters',
   }),
 });
+
+/**
+ * Validation schemas for MCQ Quiz endpoints
+ */
+export const createQuizSchema = Joi.object({
+  title: Joi.string().trim().max(120).allow('').default(''),
+  topic: Joi.string().trim().min(2).max(100).required().messages({
+    'string.empty': 'Topic is required',
+    'string.min': 'Topic must be at least 2 characters',
+  }),
+  techStack: Joi.string().trim().allow('').max(200).default(''),
+  difficulty: Joi.string()
+    .valid('easy', 'medium', 'hard', 'mixed')
+    .default('medium'),
+  numberOfQuestions: Joi.number().integer().min(3).max(15).default(5),
+  timeLimitMinutes: Joi.number().integer().min(2).max(60).default(10),
+});
+
+export const submitQuizSchema = Joi.object({
+  timeSpentSeconds: Joi.number().integer().min(0).default(0),
+  answers: Joi.array()
+    .items(
+      Joi.object({
+        questionId: Joi.string().allow('', null).optional(),
+        questionIndex: Joi.number().integer().min(0).optional(),
+        selectedOption: Joi.number().integer().min(0).max(10).allow(null).optional(),
+      })
+    )
+    .default([]),
+});
+

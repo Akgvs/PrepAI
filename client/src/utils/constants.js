@@ -22,9 +22,24 @@ export const QUESTION_COUNTS = [3, 5, 7, 10];
 
 export const NAV_LINKS = [
   { name: 'Mock Interviews', path: '/dashboard/mocks' },
+  { name: 'Smart Quizzes', path: '/dashboard/quizzes' },
   { name: 'ATS Resumes', path: '/dashboard/resumes' },
   { name: 'Pricing', path: '/pricing' },
 ];
+
+export const QUIZ_TOPICS = [
+  { value: 'Full-Stack Development', label: 'Full-Stack Architecture' },
+  { value: 'Frontend & React', label: 'Frontend (React, Web APIs, CSS)' },
+  { value: 'Backend & Node.js', label: 'Backend (Node.js, Express, Microservices)' },
+  { value: 'Databases & SQL', label: 'Databases, SQL & Indexing' },
+  { value: 'System Design', label: 'System Design & Distributed Systems' },
+  { value: 'Data Structures & Algorithms', label: 'Data Structures & Algorithms' },
+  { value: 'DevOps & Cloud', label: 'DevOps, CI/CD & Docker' },
+  { value: 'Web Security', label: 'Web Security & OWASP Top 10' },
+];
+
+export const QUIZ_QUESTION_COUNTS = [5, 10, 15];
+
 
 export const PRICING_TIERS = [
   {

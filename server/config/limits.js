@@ -9,21 +9,25 @@ const PLAN_LIMITS = {
     interviewsGenerated: 5,
     answersEvaluated: 50,
     resumesCreated: 3,
+    quizzesGenerated: 5,
   },
   paid: {
     interviewsGenerated: Infinity,
     answersEvaluated: Infinity,
     resumesCreated: Infinity,
+    quizzesGenerated: Infinity,
   },
   monthly: {
     interviewsGenerated: Infinity,
     answersEvaluated: Infinity,
     resumesCreated: Infinity,
+    quizzesGenerated: Infinity,
   },
   yearly: {
     interviewsGenerated: Infinity,
     answersEvaluated: Infinity,
     resumesCreated: Infinity,
+    quizzesGenerated: Infinity,
   },
 };
 

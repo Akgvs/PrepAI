@@ -12,6 +12,8 @@ const MockInterviewsPage = lazy(() => import('./pages/MockInterviewsPage.jsx'));
 const InterviewSessionPage = lazy(() => import('./pages/InterviewSessionPage.jsx'));
 const ResumeListPage = lazy(() => import('./pages/ResumeListPage.jsx'));
 const ResumeBuilderPage = lazy(() => import('./pages/ResumeBuilderPage.jsx'));
+const QuizListPage = lazy(() => import('./pages/QuizListPage.jsx'));
+const QuizSessionPage = lazy(() => import('./pages/QuizSessionPage.jsx'));
 
 const PageFallback = () => (
   <div className="min-h-[60vh] flex items-center justify-center text-slate-400">
@@ -55,6 +57,8 @@ function App() {
           <Route index element={<DashboardPage />} />
           <Route path="mocks" element={<MockInterviewsPage />} />
           <Route path="mocks/:id" element={<InterviewSessionPage />} />
+          <Route path="quizzes" element={<QuizListPage />} />
+          <Route path="quizzes/:id" element={<QuizSessionPage />} />
           <Route path="resumes" element={<ResumeListPage />} />
           <Route path="resumes/:id" element={<ResumeBuilderPage />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />

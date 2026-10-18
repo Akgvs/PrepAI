@@ -28,6 +28,7 @@ const LandingPage = () => {
         'Practice with an AI interviewer equipped with speech recognition, audio voice playback, webcam tracking, and comprehensive STAR feedback.',
       badge: 'Interactive Voice',
       badgeVariant: 'indigo',
+      link: '/dashboard/mocks',
     },
     {
       icon: BookOpen,
@@ -36,6 +37,7 @@ const LandingPage = () => {
         'Test your technical depth with AI-generated role and stack-specific practice tests with instant explanations and score insights.',
       badge: 'Role Adaptive',
       badgeVariant: 'purple',
+      link: '/dashboard/quizzes',
     },
     {
       icon: FileText,
@@ -44,6 +46,7 @@ const LandingPage = () => {
         'Build ATS-compliant resumes with real-time scoring, STAR-method bullet rewriting, and instant PDF download.',
       badge: 'ATS Optimized',
       badgeVariant: 'emerald',
+      link: '/dashboard/resumes',
     },
     {
       icon: Mail,
@@ -52,6 +55,7 @@ const LandingPage = () => {
         'Generate tailored cover letters matched against job descriptions across multiple persuasive tones in seconds.',
       badge: 'Custom Tones',
       badgeVariant: 'amber',
+      link: '/dashboard',
     },
   ];
 
@@ -181,6 +185,14 @@ const LandingPage = () => {
                     {svc.description}
                   </p>
                 </div>
+
+                <Link
+                  to={isSignedIn ? svc.link : '/sign-up'}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors pt-2"
+                >
+                  <span>Explore Feature</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
               </div>
             ))}
           </div>

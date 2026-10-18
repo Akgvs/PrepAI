@@ -397,9 +397,240 @@ const getMockATSScore = (resumeData) => {
   };
 };
 
+const getMockQuizQuestions = ({
+  topic = 'General Tech',
+  techStack = '',
+  difficulty = 'medium',
+  numberOfQuestions = 5,
+}) => {
+  const normalized = `${topic} ${techStack}`.toLowerCase();
+
+  const reactQuestions = [
+    {
+      question: 'What happens when a React component re-renders?',
+      codeSnippet: '',
+      options: [
+        'The entire DOM tree is completely destroyed and reconstructed from scratch.',
+        'The component function re-executes, creates a new Virtual DOM tree, and React reconciles diffs with the real DOM.',
+        'Only variables marked with the `static` keyword are preserved.',
+        'React freezes state mutations until the browser repaints the layout.',
+      ],
+      correctAnswer: 1,
+      explanation: 'In React, re-rendering triggers execution of the component function, generating a new Virtual DOM representation. React’s diffing algorithm (Reconciliation) identifies differences with the previous snapshot and minimally updates the actual browser DOM.',
+      topicTag: 'React Reconciliation',
+      difficulty: 'medium',
+    },
+    {
+      question: 'Why should you avoid using array indices as `key` props for dynamically rendered lists?',
+      codeSnippet: 'items.map((item, index) => <ListItem key={index} data={item} />);',
+      options: [
+        'React throws a compilation error in production if indices are used.',
+        'It causes memory leaks because index keys are stored in global browser caches.',
+        'It can break component state and cause UI glitches when items are reordered, inserted, or removed.',
+        'Keys must always be 64-bit UUID strings according to the HTML5 specification.',
+      ],
+      correctAnswer: 2,
+      explanation: 'Using an index as a key confuses React reconciliation when list order changes. Uncontrolled child state (like input values or animations) can get associated with the wrong item.',
+      topicTag: 'React Keys',
+      difficulty: 'medium',
+    },
+    {
+      question: 'What is the purpose of the `useEffect` cleanup function?',
+      codeSnippet: 'useEffect(() => {\n  const sub = api.subscribe();\n  return () => sub.unsubscribe();\n}, []);',
+      options: [
+        'To reset component state variables back to their default initial values.',
+        'To clean up subscriptions, timers, or event listeners before the component unmounts or before re-running the effect.',
+        'To immediately trigger a garbage collection cycle in the V8 engine.',
+        'To serialize the DOM node for server-side rendering hydration.',
+      ],
+      correctAnswer: 1,
+      explanation: 'The return function in `useEffect` is the cleanup callback. React runs it when unmounting and before subsequent executions of the effect to prevent memory leaks and dangling listeners.',
+      topicTag: 'React Hooks',
+      difficulty: 'easy',
+    },
+    {
+      question: 'How does React 18 Concurrent Mode improve user experience during heavy state transitions?',
+      codeSnippet: '',
+      options: [
+        'It converts client-side JavaScript into multi-threaded Web Workers automatically.',
+        'It enables interruptible rendering, allowing high-priority events (e.g. typing) to interrupt lower-priority render passes.',
+        'It forces all CSS animations to run on the GPU instead of the CPU.',
+        'It caches all HTTP requests in the browser Service Worker.',
+      ],
+      correctAnswer: 1,
+      explanation: 'Concurrent React allows rendering to be paused, resumed, or discarded. Urgent updates (clicks, keystrokes) can preempt long background computations (like large list filtering).',
+      topicTag: 'React Concurrent',
+      difficulty: 'hard',
+    },
+    {
+      question: 'When using `useMemo`, what is the primary consideration?',
+      codeSnippet: 'const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);',
+      options: [
+        'It should be wrapped around every single variable definition in your application.',
+        'It guarantees that memory consumption will decrease across all browser tabs.',
+        'The overhead of memory allocation and dependency checks should not outweigh the cost of the calculation itself.',
+        'It allows asynchronous promises to resolve synchronously without `await`.',
+      ],
+      correctAnswer: 2,
+      explanation: 'Overusing `useMemo` introduces memory overhead and dependency comparison cost. It should be reserved for genuinely expensive calculations or keeping reference identity stable.',
+      topicTag: 'Performance Optimization',
+      difficulty: 'medium',
+    },
+  ];
+
+  const backendQuestions = [
+    {
+      question: 'In Node.js, which phase of the Event Loop executes callbacks scheduled by `setImmediate()`?',
+      codeSnippet: '',
+      options: [
+        'The Timers phase',
+        'The Poll phase',
+        'The Check phase',
+        'The Close callbacks phase',
+      ],
+      correctAnswer: 2,
+      explanation: 'The `check` phase of the Node.js event loop executes callbacks scheduled by `setImmediate()`. This occurs immediately after the `poll` phase completes.',
+      topicTag: 'Node.js Event Loop',
+      difficulty: 'medium',
+    },
+    {
+      question: 'What is the purpose of database indexing on frequently filtered columns?',
+      codeSnippet: 'CREATE INDEX idx_users_email ON users(email);',
+      options: [
+        'To encrypt user emails at rest for GDPR compliance.',
+        'To enable O(log N) or hash lookups instead of doing full table scans (O(N)).',
+        'To automatically compress disk storage and reduce memory usage.',
+        'To enforce foreign key cascade deletes.',
+      ],
+      correctAnswer: 1,
+      explanation: 'Database indexes (typically B-Trees) enable rapid logarithmic searches without scanning every row in the table, drastically reducing disk I/O and query latency.',
+      topicTag: 'Database Indexing',
+      difficulty: 'easy',
+    },
+    {
+      question: 'What distinguishes idempotency in HTTP methods like PUT and DELETE compared to POST?',
+      codeSnippet: '',
+      options: [
+        'PUT and DELETE can only accept URL parameters, not JSON request bodies.',
+        'Multiple identical idempotent requests have the same side-effect on the server as a single request.',
+        'POST requests are automatically cached by browser CDNs, whereas PUT never is.',
+        'Idempotent methods cannot return HTTP error status codes.',
+      ],
+      correctAnswer: 1,
+      explanation: 'An HTTP method is idempotent if making the identical request multiple times produces the same server state as making it once. PUT and DELETE are idempotent; POST is typically non-idempotent.',
+      topicTag: 'REST API Design',
+      difficulty: 'medium',
+    },
+    {
+      question: 'What is connection pooling in backend databases?',
+      codeSnippet: '',
+      options: [
+        'A technique that caches full SQL query results in Redis forever.',
+        'Maintaining a cache of open database connections to reuse across requests, avoiding expensive TCP/TLS handshake overhead.',
+        'Clustering multiple database replicas behind a round-robin DNS server.',
+        'A protocol for compressing database backups before sending them to cloud storage.',
+      ],
+      correctAnswer: 1,
+      explanation: 'Opening a new database connection involves TCP and TLS handshakes plus authentication. A connection pool keeps reusable connections alive for incoming requests.',
+      topicTag: 'System Performance',
+      difficulty: 'medium',
+    },
+    {
+      question: 'What is the primary vulnerability prevented by using parameterized SQL queries?',
+      codeSnippet: 'db.query("SELECT * FROM users WHERE id = $1", [userId]);',
+      options: [
+        'Cross-Site Scripting (XSS)',
+        'SQL Injection (SQLi)',
+        'Server-Side Request Forgery (SSRF)',
+        'Denial of Service (DoS)',
+      ],
+      correctAnswer: 1,
+      explanation: 'Parameterized queries treat user input strictly as literal data rather than executable SQL syntax, completely neutralizing SQL Injection attacks.',
+      topicTag: 'Web Security',
+      difficulty: 'easy',
+    },
+  ];
+
+  const pool = normalized.includes('react') || normalized.includes('front')
+    ? reactQuestions
+    : backendQuestions;
+
+  // If more questions requested, generate variations
+  const result = [];
+  for (let i = 0; i < numberOfQuestions; i++) {
+    const template = pool[i % pool.length];
+    result.push({
+      ...template,
+      question: i >= pool.length ? `[Follow-up] ${template.question}` : template.question,
+      difficulty,
+    });
+  }
+
+  return { questions: result };
+};
+
+/**
+ * Generate multiple choice quiz questions based on topic and tech stack.
+ */
+export const generateQuizQuestions = async ({
+  topic,
+  techStack,
+  difficulty = 'medium',
+  numberOfQuestions = 5,
+}) => {
+  if (!isGeminiAvailable()) {
+    console.log('Gemini API key not configured — using realistic quiz questions template');
+    return getMockQuizQuestions({
+      topic,
+      techStack,
+      difficulty,
+      numberOfQuestions,
+    });
+  }
+
+  const prompt = `You are a principal engineer and senior technical assessor.
+Generate exactly ${numberOfQuestions} technical multiple choice questions (MCQs) for a practice skill assessment.
+
+Topic: ${topic}
+Tech Stack: ${techStack || topic}
+Difficulty: ${difficulty}
+
+Return your response as a JSON object with this exact structure:
+{
+  "questions": [
+    {
+      "question": "Clear and conceptual question text",
+      "codeSnippet": "Optional snippet if code analysis is required, or empty string",
+      "options": [
+        "First plausible option",
+        "Second plausible option",
+        "Third plausible option",
+        "Fourth plausible option"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Clear, educational explanation of why the correct option is right and why others are wrong.",
+      "topicTag": "${topic}",
+      "difficulty": "${difficulty}"
+    }
+  ]
+}
+
+Rules:
+- Generate exactly ${numberOfQuestions} questions.
+- Each question MUST have exactly 4 plausible options.
+- "correctAnswer" MUST be the 0-based integer index of the correct option (0, 1, 2, or 3).
+- "explanation" must be educational, actionable, and clear.
+- Questions should test real engineering understanding, practical edge cases, and performance nuances.
+- Return ONLY valid JSON, no markdown code fence and no additional text.`;
+
+  return callGeminiWithRetry(prompt, 'quiz questions');
+};
+
 export default {
   generateInterviewQuestions,
   evaluateInterviewAnswer,
   scoreResumeATS,
   rewriteBulletSTAR,
+  generateQuizQuestions,
 };
+

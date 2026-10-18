@@ -9,9 +9,11 @@ import {
   ArrowRight,
   Layers,
   FileText,
+  BookOpen,
 } from 'lucide-react';
 import interviewService from '../services/interview.service.js';
 import resumeService from '../services/resume.service.js';
+import quizService from '../services/quiz.service.js';
 import useUsageQuota from '../hooks/useUsageQuota.js';
 import Button from '../components/common/Button.jsx';
 import Badge from '../components/common/Badge.jsx';
@@ -21,18 +23,21 @@ const DashboardPage = () => {
   const navigate = useNavigate();
   const [interviews, setInterviews] = useState([]);
   const [resumes, setResumes] = useState([]);
+  const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const { usageData, plan, isPaid } = useUsageQuota();
 
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const [intRes, resRes] = await Promise.all([
+      const [intRes, resRes, quizRes] = await Promise.all([
         interviewService.getAll(),
-        resumeService.getAll()
+        resumeService.getAll(),
+        quizService.getAll(),
       ]);
       setInterviews(intRes.data || []);
       setResumes(resRes.data || []);
+      setQuizzes(quizRes.data || []);
     } catch {
       // Ignored
     } finally {
@@ -74,6 +79,15 @@ const DashboardPage = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <Button
+              onClick={() => navigate('/dashboard/quizzes')}
+              variant="secondary"
+              size="lg"
+              icon={BookOpen}
+              className="w-full sm:w-auto"
+            >
+              Practice Smart Quizzes
+            </Button>
             <Button
               onClick={() => navigate('/dashboard/mocks')}
               variant="primary"
@@ -360,6 +374,113 @@ const DashboardPage = () => {
                   )}
                   <Button variant="secondary" size="sm" icon={ArrowRight} iconPosition="right">
                     Edit
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Recent Quizzes Widget */}
+      <div className="glass-panel rounded-2xl p-6 sm:p-8 border border-white/10">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-xl font-bold font-heading text-white">
+              Recent Smart Quizzes
+            </h2>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Review your completed tests, scores, and AI explanations.
+            </p>
+          </div>
+
+          <Link to="/dashboard/quizzes">
+            <Button variant="ghost" size="sm" icon={ArrowRight} iconPosition="right">
+              View All
+            </Button>
+          </Link>
+        </div>
+
+        {loading ? (
+          <div className="py-12 text-center text-sm text-slate-400">
+            Loading recent quizzes...
+          </div>
+        ) : quizzes.length === 0 ? (
+          <div className="text-center py-10 border border-dashed border-slate-700/80 rounded-2xl">
+            <BookOpen className="h-10 w-10 text-slate-500 mx-auto mb-2" />
+            <p className="text-sm text-slate-300 font-medium">No quizzes taken yet</p>
+            <p className="text-xs text-slate-500 mb-4">
+              Sharpen your knowledge with timed multiple-choice assessments.
+            </p>
+            <Button
+              onClick={() => navigate('/dashboard/quizzes')}
+              variant="primary"
+              size="sm"
+              icon={BookOpen}
+            >
+              Start First Quiz
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {quizzes.slice(0, 4).map((item) => (
+              <div
+                key={item._id}
+                onClick={() => navigate(`/dashboard/quizzes/${item._id}`)}
+                className="glass-panel-interactive rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer"
+              >
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-mono uppercase text-purple-400 font-semibold">
+                      {item.topic}
+                    </span>
+                    <Badge
+                      variant={
+                        item.status === 'completed'
+                          ? item.passed
+                            ? 'emerald'
+                            : 'rose'
+                          : 'amber'
+                      }
+                      size="sm"
+                    >
+                      {item.status === 'completed'
+                        ? item.passed
+                          ? 'Passed'
+                          : 'Needs Work'
+                        : 'In Progress'}
+                    </Badge>
+                  </div>
+                  <h3 className="text-base font-bold text-white font-heading">
+                    {item.title}
+                  </h3>
+                  <div className="flex items-center gap-3 text-xs text-slate-400 mt-1">
+                    <span>{item.difficulty}</span>
+                    <span>•</span>
+                    <span>{item.numberOfQuestions} Questions</span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {new Date(item.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  {item.percentage !== null && item.percentage !== undefined && (
+                    <div className="text-right">
+                      <span className="text-xs text-slate-400 block">Score</span>
+                      <span
+                        className={`text-lg font-bold ${
+                          item.passed ? 'text-emerald-400' : 'text-rose-400'
+                        }`}
+                      >
+                        {item.percentage}%
+                      </span>
+                    </div>
+                  )}
+                  <Button variant="secondary" size="sm" icon={ArrowRight} iconPosition="right">
+                    {item.status === 'completed' ? 'Review' : 'Resume'}
                   </Button>
                 </div>
               </div>

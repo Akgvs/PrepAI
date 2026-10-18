@@ -21,6 +21,7 @@ const usageSchema = new mongoose.Schema(
     interviewsGenerated: { type: Number, default: 0 },
     answersEvaluated: { type: Number, default: 0 },
     resumesCreated: { type: Number, default: 0 },
+    quizzesGenerated: { type: Number, default: 0 },
   },
   {
     timestamps: true,
