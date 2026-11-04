@@ -12,6 +12,8 @@ import interviewRoutes from './routes/interview.routes.js';
 import resumeRoutes from './routes/resume.routes.js';
 import quizRoutes from './routes/quiz.routes.js';
 import usageRoutes from './routes/usage.routes.js';
+import webhookRoutes from './routes/webhook.routes.js';
+import userRoutes from './routes/user.routes.js';
 
 const app = express();
 
@@ -74,6 +76,8 @@ app.use('/api/interviews', interviewRoutes);
 app.use('/api/resumes', resumeRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/usage', usageRoutes);
+app.use('/api/webhooks', webhookRoutes);
+app.use('/api/users', userRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

@@ -13,7 +13,7 @@ const QuizReviewSection = ({ quiz, onNewQuizClick }) => {
   const elapsedMins = Math.round((quiz.timeSpentSeconds || 0) / 60);
   const elapsedSecs = (quiz.timeSpentSeconds || 0) % 60;
 
-  const filteredQuestions = quiz.questions.filter((q) => {
+  const filteredQuestions = (quiz.questions || []).filter((q) => {
     if (filter === 'correct') return q.isCorrect;
     if (filter === 'incorrect') return !q.isCorrect;
     return true;
@@ -67,6 +67,15 @@ const QuizReviewSection = ({ quiz, onNewQuizClick }) => {
           </div>
         </div>
       </div>
+
+      {quiz.isArchived && (
+        <div className="p-4 rounded-xl border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs leading-relaxed flex items-center gap-3">
+          <Clock className="h-5 w-5 shrink-0 text-indigo-400" />
+          <span>
+            This assessment is older than your retention policy threshold. Detailed question options and explanations have been pruned to optimize database storage, but your high-level scores and benchmark metrics remain permanently preserved.
+          </span>
+        </div>
+      )}
 
       {/* Solutions Header & Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-white/10 pb-4">

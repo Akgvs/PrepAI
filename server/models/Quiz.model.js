@@ -67,10 +67,15 @@ const quizSchema = new mongoose.Schema(
       required: true,
     },
     topic: {
+      t
       type: String,
       required: true,
     },
     techStack: {
+      type: String,
+      default: '',
+    },
+    focusAreas: {
       type: String,
       default: '',
     },
@@ -117,6 +122,18 @@ const quizSchema = new mongoose.Schema(
     completedAt: {
       type: Date,
       default: null,
+    },
+    isArchived: {
+      type: Boolean,
+      default: false,
+      index: true,
+    },
+    // Scenario 1: TTL index for auto-purging abandoned/in-progress quizzes after 24h.
+    // Completed quizzes set expireAt to null, permanently exempting them from TTL deletion.
+    expireAt: {
+      type: Date,
+      default: null,
+      index: { expireAfterSeconds: 0 },
     },
   },
   {

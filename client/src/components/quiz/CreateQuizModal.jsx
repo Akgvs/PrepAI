@@ -14,6 +14,7 @@ const CreateQuizModal = ({ isOpen, onClose, onSubmit, submitting }) => {
     topic: 'Full-Stack Development',
     customTopic: '',
     techStack: 'React, Node.js, TypeScript',
+    focusAreas: '',
     difficulty: 'medium',
     numberOfQuestions: 5,
     timeLimitMinutes: 10,
@@ -30,6 +31,7 @@ const CreateQuizModal = ({ isOpen, onClose, onSubmit, submitting }) => {
       title: form.title.trim() || undefined,
       topic: finalTopic,
       techStack: form.techStack.trim(),
+      focusAreas: form.focusAreas.trim() || undefined,
       difficulty: form.difficulty,
       numberOfQuestions: Number(form.numberOfQuestions),
       timeLimitMinutes: Number(form.timeLimitMinutes),
@@ -86,6 +88,19 @@ const CreateQuizModal = ({ isOpen, onClose, onSubmit, submitting }) => {
             placeholder="e.g. React 18, Node 20, PostgreSQL, Redis"
             value={form.techStack}
             onChange={(e) => setForm({ ...form, techStack: e.target.value })}
+            className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+          />
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+            Key Concepts / Focus Areas <span className="text-slate-500 font-normal">(Optional)</span>
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. Concurrency, Custom Hooks, Indexing, Memory Leaks"
+            value={form.focusAreas}
+            onChange={(e) => setForm({ ...form, focusAreas: e.target.value })}
             className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
           />
         </div>

@@ -48,6 +48,7 @@ export const createQuizSchema = Joi.object({
     'string.min': 'Topic must be at least 2 characters',
   }),
   techStack: Joi.string().trim().allow('').max(200).default(''),
+  focusAreas: Joi.string().trim().allow('').max(300).default(''),
   difficulty: Joi.string()
     .valid('easy', 'medium', 'hard', 'mixed')
     .default('medium'),

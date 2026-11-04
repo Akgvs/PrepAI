@@ -9,6 +9,7 @@ import {
   getQuizById,
   submitQuiz,
   deleteQuiz,
+  archiveOldQuizzes,
 } from '../controllers/quiz.controller.js';
 
 const router = Router();
@@ -26,6 +27,7 @@ router.post(
 );
 
 router.get('/', getUserQuizzes);
+router.post('/maintenance/archive-old', archiveOldQuizzes);
 router.get('/:id', getQuizById);
 router.post('/:id/submit', validate(submitQuizSchema), submitQuiz);
 router.delete('/:id', deleteQuiz);
