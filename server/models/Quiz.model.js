@@ -67,7 +67,7 @@ const quizSchema = new mongoose.Schema(
       required: true,
     },
     topic: {
-      t
+
       type: String,
       required: true,
     },
