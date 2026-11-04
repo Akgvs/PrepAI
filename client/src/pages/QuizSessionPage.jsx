@@ -78,7 +78,7 @@ const QuizSessionPage = () => {
 
       setSubmitting(true);
       if (isAutoSubmit) {
-        toast('Time is up! Submitting answers...', { icon: '⏰' });
+        toast('Time is up. Submitting answers...', { icon: '⏰' });
       }
 
       try {
@@ -101,7 +101,7 @@ const QuizSessionPage = () => {
         setQuiz(res.data);
         setConfirmSubmitOpen(false);
         setCurrentIndex(0);
-        toast.success('Quiz submitted! Check your score & concept review below.');
+        toast.success('Assessment submitted. Viewing score & explanations.');
       } catch (err) {
         toast.error(err.message || 'Failed to submit quiz');
       } finally {
@@ -148,8 +148,8 @@ const QuizSessionPage = () => {
   if (loading || !quiz) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center text-slate-400">
-        <div className="w-10 h-10 rounded-full border-2 border-purple-500 border-t-transparent animate-spin mb-4" />
-        <p className="text-sm">Preparing assessment environment...</p>
+        <div className="w-8 h-8 rounded-full border-2 border-white/20 border-t-white animate-spin mb-3" />
+        <p className="text-xs font-mono">Preparing assessment environment...</p>
       </div>
     );
   }
@@ -161,23 +161,23 @@ const QuizSessionPage = () => {
   const unansweredCount = totalQuestions - answeredCount;
 
   return (
-    <div className="space-y-6 animate-fadeIn pb-12">
+    <div className="space-y-6 pb-12">
       {/* Session Top Header */}
-      <div className="glass-panel rounded-2xl p-4 sm:p-6 border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="rounded-xl p-4 sm:p-5 bg-[#12151e] border border-white/8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate('/dashboard/quizzes')}
-            className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-xl transition-colors shrink-0 cursor-pointer"
+            className="p-1.5 text-slate-400 hover:text-white hover:bg-white/5 rounded-md transition-colors shrink-0 cursor-pointer"
             title="Back to Quizzes"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-4 w-4" />
           </button>
           <div>
             <div className="flex items-center gap-2 mb-1 flex-wrap">
-              <span className="text-xs font-mono uppercase text-purple-400 font-semibold">
+              <span className="text-xs font-mono uppercase text-slate-400">
                 {quiz.topic}
               </span>
-              <Badge variant="indigo" size="sm">
+              <Badge variant="slate" size="sm">
                 {quiz.difficulty}
               </Badge>
               {isCompleted ? (
@@ -186,29 +186,29 @@ const QuizSessionPage = () => {
                 </Badge>
               ) : (
                 <Badge variant="amber" size="sm" dot>
-                  Live Assessment
+                  Active Session
                 </Badge>
               )}
             </div>
-            <h1 className="text-lg sm:text-xl font-bold font-heading text-white line-clamp-1">
+            <h1 className="text-base sm:text-lg font-semibold text-white line-clamp-1">
               {quiz.title}
             </h1>
           </div>
         </div>
 
         {/* Status / Timer */}
-        <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+        <div className="flex items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end">
           {!isCompleted ? (
             <>
               <div
-                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl border font-mono text-sm font-bold ${
+                className={`flex items-center gap-2 px-3 py-1 rounded-md border font-mono text-xs ${
                   timeRemaining < 120
-                    ? 'bg-rose-500/20 text-rose-300 border-rose-500/30 animate-pulse'
-                    : 'bg-slate-900/80 text-purple-300 border-purple-500/30'
+                    ? 'bg-[#1a1215] text-rose-300 border-rose-500/30'
+                    : 'bg-[#0c0e14] text-slate-200 border-white/8'
                 }`}
               >
-                <Clock className="h-4 w-4" />
-                <span>{formatTimer(timeRemaining)}</span>
+                <Clock className="h-3.5 w-3.5 text-slate-400" />
+                <span className="tabular-nums">{formatTimer(timeRemaining)}</span>
               </div>
 
               <Button
@@ -217,13 +217,13 @@ const QuizSessionPage = () => {
                 icon={Send}
                 onClick={() => setConfirmSubmitOpen(true)}
               >
-                Finish Quiz
+                Submit Assessment
               </Button>
             </>
           ) : (
             <Link to="/dashboard/quizzes">
               <Button variant="secondary" size="sm" icon={RotateCcw}>
-                Back to All Quizzes
+                Back to all quizzes
               </Button>
             </Link>
           )}
@@ -238,28 +238,28 @@ const QuizSessionPage = () => {
         />
       ) : (
         /* ACTIVE TEST MODE */
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
           {/* Question Card (8 Cols) */}
           <div className="lg:col-span-8">
-            <div className="glass-panel rounded-2xl p-6 sm:p-8 border border-white/10 relative">
-              <div className="flex items-center justify-between gap-4 mb-4 pb-4 border-b border-white/10">
+            <div className="rounded-xl p-5 sm:p-6 bg-[#12151e] border border-white/8 relative">
+              <div className="flex items-center justify-between gap-4 mb-3 pb-3 border-b border-white/8">
                 <span className="text-xs font-mono text-slate-400">
-                  Question <span className="text-white font-bold">{currentIndex + 1}</span> of{' '}
-                  <span className="text-white font-bold">{totalQuestions}</span>
+                  Question <span className="text-white font-medium">{currentIndex + 1}</span> of{' '}
+                  <span className="text-white font-medium">{totalQuestions}</span>
                 </span>
-                <Badge variant="purple" size="sm">
+                <Badge variant="slate" size="sm">
                   {currentQuestion.topicTag || quiz.topic}
                 </Badge>
               </div>
 
-              <h2 className="text-lg sm:text-xl font-bold text-white font-heading leading-relaxed mb-4">
+              <h2 className="text-sm sm:text-base font-semibold text-white leading-relaxed mb-4">
                 {currentQuestion.question}
               </h2>
 
               {currentQuestion.codeSnippet && (
-                <div className="mb-6 rounded-xl overflow-hidden border border-slate-700/80 bg-slate-950 p-4 font-mono text-xs text-indigo-200">
-                  <div className="flex items-center gap-1.5 text-slate-500 mb-2 border-b border-white/5 pb-1.5">
-                    <Code2 className="h-3.5 w-3.5" />
+                <div className="mb-4 rounded-lg overflow-hidden border border-white/8 bg-[#0c0e14] p-3 font-mono text-xs text-sky-200">
+                  <div className="flex items-center gap-1.5 text-slate-500 mb-1.5 border-b border-white/5 pb-1">
+                    <Code2 className="h-3 w-3" />
                     <span>Code Snippet</span>
                   </div>
                   <pre className="overflow-x-auto whitespace-pre-wrap">
@@ -268,7 +268,7 @@ const QuizSessionPage = () => {
                 </div>
               )}
 
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {currentQuestion.options?.map((optionText, optIdx) => {
                   const isSelected = selectedAnswers[currentIndex] === optIdx;
 
@@ -277,28 +277,28 @@ const QuizSessionPage = () => {
                       key={optIdx}
                       type="button"
                       onClick={() => handleSelectOption(optIdx)}
-                      className={`w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3.5 cursor-pointer ${
+                      className={`w-full text-left p-3 rounded-lg border transition-colors flex items-start gap-3 cursor-pointer ${
                         isSelected
-                          ? 'border-purple-500 bg-purple-500/15 text-white ring-2 ring-purple-500/40 shadow-lg shadow-purple-500/10'
-                          : 'border-white/10 bg-slate-900/40 text-slate-300 hover:border-white/20 hover:bg-slate-900/80 hover:text-white'
+                          ? 'border-sky-500/60 bg-[#162030] text-white shadow-sm'
+                          : 'border-white/8 bg-[#0c0e14] text-slate-300 hover:border-white/20 hover:text-white'
                       }`}
                     >
                       <span
-                        className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold font-mono shrink-0 transition-colors ${
+                        className={`w-6 h-6 rounded flex items-center justify-center text-xs font-mono font-medium shrink-0 transition-colors ${
                           isSelected
-                            ? 'bg-purple-600 text-white'
-                            : 'bg-slate-800 text-slate-400'
+                            ? 'bg-sky-500 text-slate-950 font-semibold'
+                            : 'bg-[#181c28] text-slate-400'
                         }`}
                       >
                         {OPTION_LETTERS[optIdx] || optIdx + 1}
                       </span>
-                      <span className="text-sm leading-relaxed pt-0.5">{optionText}</span>
+                      <span className="text-xs sm:text-sm leading-relaxed pt-0.5">{optionText}</span>
                     </button>
                   );
                 })}
               </div>
 
-              <div className="flex items-center justify-between gap-4 mt-8 pt-6 border-t border-white/10">
+              <div className="flex items-center justify-between gap-4 mt-6 pt-4 border-t border-white/8">
                 <Button
                   variant="secondary"
                   size="sm"
@@ -309,13 +309,13 @@ const QuizSessionPage = () => {
                   Previous
                 </Button>
 
-                <div className="text-xs text-slate-400 hidden sm:block">
+                <div className="text-xs font-mono text-slate-400 hidden sm:block">
                   {selectedAnswers[currentIndex] !== undefined ? (
                     <span className="text-emerald-400 flex items-center gap-1">
-                      <CheckCircle2 className="h-3.5 w-3.5" /> Answer Recorded
+                      <CheckCircle2 className="h-3 w-3" /> Answer Recorded
                     </span>
                   ) : (
-                    <span className="text-slate-500">Select an option to record answer</span>
+                    <span className="text-slate-500">Select an option</span>
                   )}
                 </div>
 
@@ -363,24 +363,24 @@ const QuizSessionPage = () => {
         onClose={() => setConfirmSubmitOpen(false)}
         title="Submit Assessment?"
       >
-        <div className="space-y-4">
-          <p className="text-sm text-slate-300">
+        <div className="space-y-4 pt-1">
+          <p className="text-xs text-slate-300 leading-relaxed">
             Are you sure you want to finalize and grade your test answers?
           </p>
 
           {unansweredCount > 0 && (
-            <div className="p-3.5 bg-amber-500/10 border border-amber-500/20 rounded-xl text-xs text-amber-300 flex items-start gap-2.5">
+            <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg text-xs text-amber-300 flex items-start gap-2.5">
               <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
               <div>
-                <span className="font-bold block mb-0.5">
+                <span className="font-semibold block mb-0.5">
                   {unansweredCount} Unanswered Question{unansweredCount > 1 ? 's' : ''}
                 </span>
-                Any questions left blank will be evaluated as incorrect.
+                Any questions left blank will be graded as incorrect.
               </div>
             </div>
           )}
 
-          <div className="pt-4 flex items-center justify-end gap-3 border-t border-white/10">
+          <div className="pt-3 flex items-center justify-end gap-2.5 border-t border-white/8">
             <Button
               variant="secondary"
               onClick={() => setConfirmSubmitOpen(false)}
@@ -393,7 +393,7 @@ const QuizSessionPage = () => {
               onClick={() => handleSubmit(false)}
               icon={Send}
             >
-              Grade Test Now
+              Grade Now
             </Button>
           </div>
         </div>

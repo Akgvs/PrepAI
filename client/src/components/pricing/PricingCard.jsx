@@ -134,7 +134,7 @@ const PricingCard = ({
       <div>
         <Button
           onClick={() => onSelectTier(tier.id)}
-          variant={isCurrent ? 'secondary' : isPaidTier ? 'primary' : 'secondary'}
+          variant={isCurrent ? 'secondary' : isPaidTier ? 'gradient' : 'secondary'}
           size="lg"
           disabled={isCurrent || isLoading}
           loading={isLoading}

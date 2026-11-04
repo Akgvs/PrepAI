@@ -14,8 +14,9 @@ export const initGemini = () => {
   }
 
   genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-  console.log('Gemini AI initialized (gemini-2.0-flash)');
+  const modelName = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
+  model = genAI.getGenerativeModel({ model: modelName });
+  console.log(`Gemini AI initialized (${modelName})`);
 };
 
 /**
@@ -24,7 +25,16 @@ export const initGemini = () => {
  */
 export const getGeminiModel = () => {
   if (!model) {
-    throw new Error('Gemini not initialized. Call initGemini() first.');
+    if (process.env.GEMINI_API_KEY) {
+      initGemini();
+    } else {
+      throw new Error('Gemini not initialized. Set GEMINI_API_KEY first.');
+    }
   }
   return model;
+};
+
+export default {
+  initGemini,
+  getGeminiModel,
 };

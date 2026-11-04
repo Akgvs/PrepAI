@@ -10,7 +10,7 @@ import {
   Calendar,
   Trash2,
   ArrowRight,
-  Sparkles,
+  Terminal,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import quizService from '../services/quiz.service.js';
@@ -51,7 +51,7 @@ const QuizListPage = () => {
 
   const handleOpenCreateModal = () => {
     if (!quota.isUnlimited && quota.isExceeded) {
-      toast.error('Free plan quiz limit reached. Upgrade to Pro for unlimited quizzes.');
+      toast.error('Free plan quiz limit reached. Upgrade for unlimited quizzes.');
       setUpgradeModalOpen(true);
       return;
     }
@@ -60,7 +60,7 @@ const QuizListPage = () => {
 
   const handleCreate = async (formData) => {
     if (!quota.isUnlimited && quota.isExceeded) {
-      toast.error('Free plan quiz limit reached. Upgrade to Pro for unlimited quizzes.');
+      toast.error('Free plan quiz limit reached. Upgrade for unlimited quizzes.');
       setUpgradeModalOpen(true);
       return;
     }
@@ -68,7 +68,7 @@ const QuizListPage = () => {
     setSubmitting(true);
     try {
       const res = await quizService.create(formData);
-      toast.success('Quiz generated! Best of luck on your assessment.');
+      toast.success('Assessment generated. Starting session.');
       setOpenDialog(false);
       refreshUsage();
       navigate(`/dashboard/quizzes/${res.data._id}`);
@@ -122,124 +122,118 @@ const QuizListPage = () => {
       case 'easy':
         return <Badge variant="emerald" size="sm">Easy</Badge>;
       case 'medium':
-        return <Badge variant="indigo" size="sm">Medium</Badge>;
+        return <Badge variant="slate" size="sm">Medium</Badge>;
       case 'hard':
         return <Badge variant="rose" size="sm">Hard</Badge>;
       default:
-        return <Badge variant="purple" size="sm">Adaptive</Badge>;
+        return <Badge variant="slate" size="sm">Adaptive</Badge>;
     }
   };
 
   return (
-    <div className="space-y-8 animate-fadeIn">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-white/8">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold font-heading text-white">
-            Smart MCQ Quizzes
+          <div className="inline-flex items-center gap-2 mb-1">
+            <Badge variant="slate" size="sm" dot>
+              Adaptive Assessments
+            </Badge>
+          </div>
+          <h1 className="text-xl sm:text-2xl font-semibold text-white tracking-tight">
+            Skill Diagnostic Quizzes
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Test technical depth with AI-generated timed tests, instant grading, and comprehensive concept breakdowns.
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            Timed scenario and edge-case multiple choice assessments with server-side validation.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
           {quota.isUnlimited ? (
-            <Badge variant="indigo" size="md" dot>
-              <Sparkles className="h-3 w-3 mr-1 inline text-yellow-300" />
-              Unlimited Pro Tier
+            <Badge variant="sky" size="sm" dot>
+              Professional Plan
             </Badge>
           ) : (
-            <Badge variant="slate" size="md">
-              <span className="text-slate-300">
-                {quota.remaining} of {quota.limit} Quizzes Left
+            <Badge variant="slate" size="sm">
+              <span className="text-slate-300 font-mono">
+                {quota.remaining} of {quota.limit} quizzes remaining
               </span>
             </Badge>
           )}
 
           <Button onClick={handleOpenCreateModal} variant="primary" icon={Plus}>
-            Create New Quiz
+            Create Assessment
           </Button>
         </div>
       </div>
 
       {/* Aggregate Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div className="glass-panel rounded-2xl p-5 border border-white/10 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center shrink-0">
-            <BookOpen className="h-6 w-6" />
-          </div>
-          <div>
-            <span className="text-xs text-slate-400 font-medium block">Quizzes Taken</span>
-            <span className="text-2xl font-bold font-heading text-white">{quizzes.length}</span>
-          </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="rounded-xl p-4 bg-[#12151e] border border-white/8">
+          <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider block mb-1">
+            Assessments Taken
+          </span>
+          <span className="text-2xl font-mono font-semibold text-white tracking-tight tabular-nums">
+            {quizzes.length}
+          </span>
         </div>
 
-        <div className="glass-panel rounded-2xl p-5 border border-white/10 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
-            <TrendingUp className="h-6 w-6" />
-          </div>
-          <div>
-            <span className="text-xs text-slate-400 font-medium block">Average Score</span>
-            <span className="text-2xl font-bold font-heading text-white">
-              {avgScore !== null ? `${avgScore}%` : '—'}
-            </span>
-          </div>
+        <div className="rounded-xl p-4 bg-[#12151e] border border-white/8">
+          <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider block mb-1">
+            Average Score
+          </span>
+          <span className="text-2xl font-mono font-semibold text-white tracking-tight tabular-nums">
+            {avgScore !== null ? `${avgScore}%` : '—'}
+          </span>
         </div>
 
-        <div className="glass-panel rounded-2xl p-5 border border-white/10 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-            <CheckCircle2 className="h-6 w-6" />
-          </div>
-          <div>
-            <span className="text-xs text-slate-400 font-medium block">Pass Rate (≥60%)</span>
-            <span className="text-2xl font-bold font-heading text-white">
-              {passRate !== null ? `${passRate}%` : '—'}
-            </span>
-          </div>
+        <div className="rounded-xl p-4 bg-[#12151e] border border-white/8">
+          <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider block mb-1">
+            Pass Rate (≥60%)
+          </span>
+          <span className="text-2xl font-mono font-semibold text-emerald-400 tracking-tight tabular-nums">
+            {passRate !== null ? `${passRate}%` : '—'}
+          </span>
         </div>
 
-        <div className="glass-panel rounded-2xl p-5 border border-white/10 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-400 flex items-center justify-center shrink-0">
-            <HelpCircle className="h-6 w-6" />
-          </div>
-          <div>
-            <span className="text-xs text-slate-400 font-medium block">Questions Solved</span>
-            <span className="text-2xl font-bold font-heading text-white">
-              {totalQuestionsAnswered}
-            </span>
-          </div>
+        <div className="rounded-xl p-4 bg-[#12151e] border border-white/8">
+          <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wider block mb-1">
+            Questions Solved
+          </span>
+          <span className="text-2xl font-mono font-semibold text-white tracking-tight tabular-nums">
+            {totalQuestionsAnswered}
+          </span>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-white/10 pb-4">
+      <div className="flex items-center gap-1.5 p-1 rounded-lg bg-[#12151e] border border-white/8 w-fit">
         <button
           onClick={() => setFilter('all')}
-          className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+          className={`px-3 py-1.5 text-xs font-mono rounded-md transition-colors cursor-pointer ${
             filter === 'all'
-              ? 'bg-purple-600/20 text-purple-300 border border-purple-500/30'
-              : 'text-slate-400 hover:text-white hover:bg-white/5'
+              ? 'bg-white text-slate-950 font-semibold shadow-sm'
+              : 'text-slate-400 hover:text-white'
           }`}
         >
-          All Quizzes ({quizzes.length})
+          All ({quizzes.length})
         </button>
         <button
           onClick={() => setFilter('completed')}
-          className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+          className={`px-3 py-1.5 text-xs font-mono rounded-md transition-colors cursor-pointer ${
             filter === 'completed'
-              ? 'bg-emerald-600/20 text-emerald-300 border border-emerald-500/30'
-              : 'text-slate-400 hover:text-white hover:bg-white/5'
+              ? 'bg-white text-slate-950 font-semibold shadow-sm'
+              : 'text-slate-400 hover:text-white'
           }`}
         >
           Completed ({completedList.length})
         </button>
         <button
           onClick={() => setFilter('in-progress')}
-          className={`px-4 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+          className={`px-3 py-1.5 text-xs font-mono rounded-md transition-colors cursor-pointer ${
             filter === 'in-progress'
-              ? 'bg-amber-600/20 text-amber-300 border border-amber-500/30'
-              : 'text-slate-400 hover:text-white hover:bg-white/5'
+              ? 'bg-white text-slate-950 font-semibold shadow-sm'
+              : 'text-slate-400 hover:text-white'
           }`}
         >
           In Progress ({quizzes.length - completedList.length})
@@ -248,9 +242,9 @@ const QuizListPage = () => {
 
       {/* Quiz Grid */}
       {loading ? (
-        <div className="py-20 text-center text-sm text-slate-400">
-          <div className="w-8 h-8 rounded-full border-2 border-purple-500 border-t-transparent animate-spin mx-auto mb-3" />
-          Loading your quiz assessments...
+        <div className="py-20 text-center text-xs font-mono text-slate-400">
+          <div className="w-7 h-7 rounded-full border-2 border-white/20 border-t-white animate-spin mx-auto mb-3" />
+          Loading assessment telemetry...
         </div>
       ) : filteredQuizzes.length === 0 ? (
         <EmptyState
@@ -263,11 +257,11 @@ const QuizListPage = () => {
               : 'No in-progress quizzes'
           }
           description="Test your skills across frontend, backend, databases, or system design with AI-curated timed questions."
-          actionText="Create Your First Quiz"
+          actionText="Create Assessment"
           onAction={handleOpenCreateModal}
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredQuizzes.map((quiz) => {
             const isCompleted = quiz.status === 'completed';
             const isPassing = quiz.passed;
@@ -276,11 +270,11 @@ const QuizListPage = () => {
               <div
                 key={quiz._id}
                 onClick={() => navigate(`/dashboard/quizzes/${quiz._id}`)}
-                className="glass-panel-interactive rounded-2xl p-6 flex flex-col justify-between group border border-white/5 hover:border-purple-500/30 transition-all cursor-pointer relative"
+                className="rounded-xl p-5 bg-[#12151e] border border-white/8 hover:border-white/20 flex flex-col justify-between transition-colors cursor-pointer"
               >
                 <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-xs font-mono font-medium text-purple-400 uppercase tracking-wider line-clamp-1">
+                  <div className="flex items-center justify-between gap-2 mb-2.5">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 line-clamp-1">
                       {quiz.topic}
                     </span>
                     <div className="flex items-center gap-1.5 shrink-0">
@@ -297,43 +291,43 @@ const QuizListPage = () => {
                     </div>
                   </div>
 
-                  <h3 className="text-lg font-bold font-heading text-white mb-2 line-clamp-1 group-hover:text-purple-300 transition-colors">
+                  <h3 className="text-sm font-semibold text-white mb-1.5 line-clamp-1">
                     {quiz.title}
                   </h3>
 
                   {quiz.techStack && (
-                    <p className="text-xs text-slate-400 mb-4 line-clamp-1">
-                      Stack: {quiz.techStack}
+                    <p className="text-xs text-slate-400 mb-3.5 line-clamp-1 font-mono">
+                      {quiz.techStack}
                     </p>
                   )}
 
-                  <div className="grid grid-cols-2 gap-3 py-3 px-3.5 bg-slate-900/60 rounded-xl border border-white/5 mb-4 text-xs text-slate-300">
+                  <div className="grid grid-cols-2 gap-2 py-2 px-3 bg-[#0c0e14] rounded-lg border border-white/8 mb-4 text-xs font-mono text-slate-400">
                     <div className="flex items-center gap-1.5">
-                      <HelpCircle className="h-3.5 w-3.5 text-slate-400" />
-                      <span>{quiz.numberOfQuestions} Questions</span>
+                      <HelpCircle className="h-3 w-3 text-slate-500" />
+                      <span>{quiz.numberOfQuestions} Qs</span>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      <Clock className="h-3.5 w-3.5 text-slate-400" />
+                      <Clock className="h-3 w-3 text-slate-500" />
                       <span>
                         {isCompleted
-                          ? `${Math.round((quiz.timeSpentSeconds || 0) / 60)}m spent`
+                          ? `${Math.round((quiz.timeSpentSeconds || 0) / 60)}m`
                           : `${quiz.timeLimitMinutes || 10}m limit`}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 col-span-2 text-slate-400">
-                      <Calendar className="h-3.5 w-3.5" />
+                    <div className="flex items-center gap-1.5 col-span-2 text-slate-500 text-[11px]">
+                      <Calendar className="h-3 w-3" />
                       <span>{new Date(quiz.createdAt).toLocaleDateString()}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t border-white/5 mt-auto">
+                <div className="flex items-center justify-between pt-3 border-t border-white/8 mt-auto">
                   <button
                     onClick={(e) => handleDelete(quiz._id, e)}
-                    className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
+                    className="p-1.5 text-slate-500 hover:text-rose-400 rounded-md transition-colors cursor-pointer"
                     title="Delete Quiz"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-3.5 w-3.5" />
                   </button>
 
                   <Button
@@ -342,7 +336,7 @@ const QuizListPage = () => {
                     icon={ArrowRight}
                     iconPosition="right"
                   >
-                    {isCompleted ? 'Review Explanations' : 'Resume Quiz'}
+                    {isCompleted ? 'Review answers' : 'Resume quiz'}
                   </Button>
                 </div>
               </div>
@@ -364,7 +358,7 @@ const QuizListPage = () => {
         isOpen={upgradeModalOpen}
         onClose={() => setUpgradeModalOpen(false)}
         title="Upgrade for Unlimited Quizzes"
-        message="You have utilized your free quiz quota for this billing period. Unlock unlimited AI assessments, custom tech stacks, and priority Gemini generation."
+        message="You have utilized your free quiz quota. Unlock unmetered assessments with the Professional tier."
       />
     </div>
   );

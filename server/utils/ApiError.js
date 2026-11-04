@@ -45,6 +45,10 @@ class ApiError extends Error {
     return new ApiError(500, message, code);
   }
 
+  static serviceUnavailable(message = 'Service temporarily unavailable. Please try again.', code = 'SERVICE_UNAVAILABLE') {
+    return new ApiError(503, message, code);
+  }
+
   static aiFailure(message = 'AI service unavailable. Please try again.', code = 'AI_SERVICE_ERROR') {
     return new ApiError(502, message, code);
   }

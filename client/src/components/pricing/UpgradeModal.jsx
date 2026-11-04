@@ -10,7 +10,7 @@ const UpgradeModal = ({ isOpen, onClose, onUpgradeSuccess, updatePlan }) => {
 
   const perks = [
     'Unlimited AI Mock Interviews (Zero rate limits)',
-    'Priority Google Gemini 2.0 Flash speed',
+    'Priority Google Gemini speed',
     'Up to 10 questions per customized interview',
     'Comprehensive STAR method gap analysis & exemplar answers',
     'Full audio speech playback & real-time mic evaluation',
@@ -92,7 +92,7 @@ const UpgradeModal = ({ isOpen, onClose, onUpgradeSuccess, updatePlan }) => {
             Maybe Later
           </Button>
           <Button
-            variant="primary"
+            variant="gradient"
             className="w-full"
             onClick={handleUpgrade}
             loading={loading}

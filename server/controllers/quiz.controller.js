@@ -1,7 +1,7 @@
 import { pruneOrArchiveOldQuizzes } from '../services/userCleanup.service.js';
 import Quiz from '../models/Quiz.model.js';
 import { incrementQuota } from '../services/usage.service.js';
-import { generateQuizQuestions } from '../services/gemini.service.js';
+import { generateQuizQuestions } from '../services/gemini/geminiQuiz.service.js';
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 

@@ -3,7 +3,7 @@ import { incrementQuota } from '../services/usage.service.js';
 import {
   scoreResumeATS,
   rewriteBulletSTAR,
-} from '../services/gemini.service.js';
+} from '../services/gemini/geminiResume.service.js';
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 

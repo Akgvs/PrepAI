@@ -7,11 +7,11 @@ import {
   FileText,
   Mail,
   BookOpen,
-  Sparkles,
-  Bot,
-  Zap,
-  ShieldCheck,
-  Award,
+  Mic,
+  Activity,
+  CheckCircle2,
+  Cpu,
+  Terminal,
 } from 'lucide-react';
 import Button from '../components/common/Button.jsx';
 import Badge from '../components/common/Badge.jsx';
@@ -23,38 +23,34 @@ const LandingPage = () => {
   const services = [
     {
       icon: Video,
-      title: 'AI Mock Interviews',
+      title: 'Mock Technical Interviews',
       description:
-        'Practice with an AI interviewer equipped with speech recognition, audio voice playback, webcam tracking, and comprehensive STAR feedback.',
-      badge: 'Interactive Voice',
-      badgeVariant: 'indigo',
+        'Voice-driven technical evaluations with speech synthesis, audio capture, webcam tracking, and structured STAR feedback.',
+      tag: 'Interactive Voice',
       link: '/dashboard/mocks',
     },
     {
       icon: BookOpen,
-      title: 'Smart MCQ Quizzes',
+      title: 'Adaptive Skill Assessments',
       description:
-        'Test your technical depth with AI-generated role and stack-specific practice tests with instant explanations and score insights.',
-      badge: 'Role Adaptive',
-      badgeVariant: 'purple',
+        'Role-specific multiple-choice assessments testing practical edge cases, architecture decisions, and code evaluation.',
+      tag: 'Role Adaptive',
       link: '/dashboard/quizzes',
     },
     {
       icon: FileText,
-      title: 'ATS Resume Builder',
+      title: 'ATS Resume Engineering',
       description:
-        'Build ATS-compliant resumes with real-time scoring, STAR-method bullet rewriting, and instant PDF download.',
-      badge: 'ATS Optimized',
-      badgeVariant: 'emerald',
+        'ATS-compliant resume compiler with automated scoring, STAR bullet rewriting, and instant PDF generation.',
+      tag: 'ATS Optimized',
       link: '/dashboard/resumes',
     },
     {
       icon: Mail,
       title: 'Cover Letter Studio',
       description:
-        'Generate tailored cover letters matched against job descriptions across multiple persuasive tones in seconds.',
-      badge: 'Custom Tones',
-      badgeVariant: 'amber',
+        'Tailored application briefs generated from target job descriptions with configurable technical depth.',
+      tag: 'Role Targeted',
       link: '/dashboard',
     },
   ];
@@ -62,136 +58,226 @@ const LandingPage = () => {
   const steps = [
     {
       number: '01',
-      title: 'Configure Your Target Role',
-      description: 'Choose your job role, tech stack, and target seniority level.',
+      title: 'Target role and stack',
+      description: 'Define your desired seniority, tech stack, and evaluation format.',
     },
     {
       number: '02',
-      title: 'Interactive AI Simulation',
-      description: 'Engage with AI via voice speech, webcam, and timed scenario questions.',
+      title: 'Voice-driven simulation',
+      description: 'Answer scenario-based engineering questions under real interview conditions.',
     },
     {
       number: '03',
-      title: 'Real-Time Evaluation',
-      description: 'Receive immediate grading, concept gap analyses, and suggested answers.',
+      title: 'Rubric evaluation',
+      description: 'Receive immediate grading across technical depth, trade-offs, and communication.',
     },
     {
       number: '04',
-      title: 'Land Your Dream Offer',
-      description: 'Iterate, build confidence, optimize your resume, and ace real interviews.',
+      title: 'Iterative mastery',
+      description: 'Review transcripts, close concept gaps, and optimize your resume.',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-[#0b0f19] text-slate-100 relative overflow-hidden flex flex-col">
-      {/* Background Ambient Glows */}
-      <div className="ambient-glow-indigo w-[700px] h-[700px] -top-64 left-1/4" />
-      <div className="ambient-glow-purple w-[600px] h-[600px] top-1/2 -right-48" />
-
+    <div className="min-h-screen bg-[#0c0e14] text-[#ededed] flex flex-col">
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-16 pb-20 sm:pt-28 sm:pb-32 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 mb-6">
-            <Badge variant="indigo" size="md" dot>
-              <Sparkles className="h-3 w-3 inline text-indigo-400" />
-              Powered by Google Gemini 2.0 Flash
-            </Badge>
-          </div>
+      <section className="pt-12 pb-16 sm:pt-20 sm:pb-24 border-b border-white/8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            {/* Left Column: Headline & Action */}
+            <div className="lg:col-span-6 space-y-6">
+              <div className="inline-flex items-center gap-2">
+                <Badge variant="slate" size="sm" dot>
+                  Engineering Assessment Engine
+                </Badge>
+                <span className="text-xs font-mono text-slate-500">
+                  v2.4
+                </span>
+              </div>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold font-heading tracking-tight max-w-5xl mx-auto leading-tight mb-6 text-white">
-            Master Technical Interviews with{' '}
-            <span className="gradient-title">Intelligent AI</span> Practice
-          </h1>
+              <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight text-white leading-[1.12]">
+                Technical interview simulations calibrated for software engineers
+              </h1>
 
-          <p className="text-lg sm:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed font-sans">
-            Prepare with realistic voice-enabled mock interviews, instant answer
-            evaluation, role-tailored quizzes, and ATS resume optimization.
-            Built for developers, engineers, and tech professionals.
-          </p>
+              <p className="text-sm sm:text-base text-slate-400 leading-relaxed max-w-xl">
+                Practice scenario-based system design and code interviews with voice recognition,
+                instant rubric grading, adaptive diagnostic quizzes, and ATS resume audits.
+              </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-            <Link to={isSignedIn ? '/dashboard' : '/sign-up'}>
-              <Button
-                variant="primary"
-                size="lg"
-                icon={ArrowRight}
-                iconPosition="right"
-                className="w-full sm:w-auto"
-              >
-                {isSignedIn ? 'Open Dashboard' : 'Start Practicing Free'}
-              </Button>
-            </Link>
-            <Link to="/dashboard/mocks">
-              <Button
-                variant="secondary"
-                size="lg"
-                icon={Video}
-                iconPosition="left"
-                className="w-full sm:w-auto"
-              >
-                Explore Mock Interviews
-              </Button>
-            </Link>
-          </div>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+                <Link to={isSignedIn ? '/dashboard' : '/sign-up'}>
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    icon={ArrowRight}
+                    iconPosition="right"
+                    className="w-full sm:w-auto"
+                  >
+                    {isSignedIn ? 'Open dashboard' : 'Start assessment'}
+                  </Button>
+                </Link>
+                <Link to="/dashboard/mocks">
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    icon={Video}
+                    className="w-full sm:w-auto"
+                  >
+                    Explore mock interviews
+                  </Button>
+                </Link>
+              </div>
 
-          {/* Social Proof Tags */}
-          <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400 font-medium">
-            <span className="flex items-center gap-1.5">
-              <Bot className="h-4 w-4 text-indigo-400" /> Real-time Speech-to-Text
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Zap className="h-4 w-4 text-purple-400" /> Instant Gemini AI Feedback
-            </span>
-            <span className="flex items-center gap-1.5">
-              <ShieldCheck className="h-4 w-4 text-emerald-400" /> ATS Compatibility Ready
-            </span>
+              {/* Technical Telemetry Badges */}
+              <div className="pt-6 border-t border-white/8 grid grid-cols-3 gap-4 text-xs font-mono text-slate-400">
+                <div>
+                  <span className="block text-white font-semibold text-sm">4.8/5.0</span>
+                  <span className="text-[11px] text-slate-500">Average candidate rating</span>
+                </div>
+                <div>
+                  <span className="block text-white font-semibold text-sm">STAR</span>
+                  <span className="text-[11px] text-slate-500">Rubric breakdown</span>
+                </div>
+                <div>
+                  <span className="block text-white font-semibold text-sm">&lt;50ms</span>
+                  <span className="text-[11px] text-slate-500">Local audio latency</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: High-Craft Live Product Moment */}
+            <div className="lg:col-span-6">
+              <div className="rounded-xl border border-white/10 bg-[#12151e] overflow-hidden shadow-2xl">
+                {/* Console Window Header */}
+                <div className="px-4 py-3 bg-[#161a24] border-b border-white/8 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-slate-600" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-slate-600" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-slate-600" />
+                    <span className="text-xs font-mono text-slate-400 ml-2">
+                      session_tech_lead.sim
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0" />
+                    <span className="text-[11px] font-mono text-rose-300 uppercase tracking-wider">
+                      REC 00:14:28
+                    </span>
+                  </div>
+                </div>
+
+                {/* Simulation Content */}
+                <div className="p-5 sm:p-6 space-y-4">
+                  {/* Question Stem */}
+                  <div className="p-4 rounded-lg bg-[#181c28] border border-white/8 space-y-2">
+                    <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+                      <span className="flex items-center gap-1.5 text-sky-400">
+                        <Terminal className="h-3.5 w-3.5" />
+                        System Architecture Question 03
+                      </span>
+                      <span>Senior Level</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
+                      "Describe how you diagnose and isolate memory leaks in high-throughput Node.js microservices under production load."
+                    </p>
+                  </div>
+
+                  {/* Audio Telemetry & Transcription preview */}
+                  <div className="p-4 rounded-lg bg-[#0e1017] border border-white/8 space-y-3">
+                    <div className="flex items-center justify-between text-xs font-mono">
+                      <span className="flex items-center gap-1.5 text-slate-300">
+                        <Mic className="h-3.5 w-3.5 text-emerald-400" />
+                        Candidate Audio Track
+                      </span>
+                      <span className="text-emerald-400">Streaming</span>
+                    </div>
+
+                    {/* Waveform Visualization */}
+                    <div className="h-8 flex items-center gap-1.5 px-2 bg-[#12151e] rounded border border-white/5">
+                      <div className="w-1 wave-bar bg-sky-400 rounded-full" />
+                      <div className="w-1 wave-bar bg-sky-400 rounded-full" />
+                      <div className="w-1 wave-bar bg-sky-400 rounded-full" />
+                      <div className="w-1 wave-bar bg-sky-400 rounded-full" />
+                      <div className="w-1 wave-bar bg-sky-400 rounded-full" />
+                      <div className="w-1 wave-bar bg-sky-400 rounded-full" />
+                      <div className="w-1 h-3 bg-slate-700 rounded-full" />
+                      <div className="w-1 h-4 bg-slate-700 rounded-full" />
+                      <div className="w-1 h-2 bg-slate-700 rounded-full" />
+                      <span className="text-[11px] font-mono text-slate-400 ml-auto">
+                        48 kHz PCM
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-slate-400 font-mono leading-relaxed">
+                      "I inspect the V8 heap snapshot using Chrome DevTools heap profiler, isolate retainer trees, and verify whether dangling event listeners or closures are holding references..."
+                    </p>
+                  </div>
+
+                  {/* Real-time Rubrics Telemetry */}
+                  <div className="grid grid-cols-3 gap-2.5 pt-1 text-xs font-mono">
+                    <div className="p-2.5 rounded bg-[#181c28] border border-white/8">
+                      <span className="text-[10px] text-slate-400 block">Root Cause</span>
+                      <span className="text-white font-semibold">9.4/10</span>
+                    </div>
+                    <div className="p-2.5 rounded bg-[#181c28] border border-white/8">
+                      <span className="text-[10px] text-slate-400 block">Tech Depth</span>
+                      <span className="text-white font-semibold">9.1/10</span>
+                    </div>
+                    <div className="p-2.5 rounded bg-[#181c28] border border-white/8">
+                      <span className="text-[10px] text-slate-400 block">STAR Format</span>
+                      <span className="text-white font-semibold">8.9/10</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Services Grid */}
-      <section className="py-20 relative z-10">
+      <section className="py-16 sm:py-20 border-b border-white/8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading text-white mb-3">
-              Comprehensive Career Acceleration
+          <div className="max-w-xl mb-12">
+            <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-white mb-2">
+              Structured preparation modules
             </h2>
-            <p className="text-slate-400 text-sm sm:text-base">
-              Everything you need to practice, refine, and present your best self to recruiters.
+            <p className="text-xs sm:text-sm text-slate-400">
+              Each module targets a specific phase of the technical interview loop.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {services.map((svc, i) => (
               <div
                 key={i}
-                className="glass-panel-interactive rounded-2xl p-6 flex flex-col justify-between"
+                className="glass-panel-interactive rounded-xl p-5 flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
-                      <svc.icon className="h-6 w-6" />
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-8 h-8 rounded-lg bg-[#181c28] border border-white/10 text-white flex items-center justify-center">
+                      <svc.icon className="h-4 w-4 text-sky-400" />
                     </div>
-                    <Badge variant={svc.badgeVariant} size="sm">
-                      {svc.badge}
-                    </Badge>
+                    <span className="text-[11px] font-mono text-slate-400 px-2 py-0.5 rounded bg-white/5 border border-white/8">
+                      {svc.tag}
+                    </span>
                   </div>
-                  <h3 className="text-xl font-bold text-white font-heading mb-2">
+                  <h3 className="text-sm font-semibold text-white mb-1.5">
                     {svc.title}
                   </h3>
-                  <p className="text-sm text-slate-400 leading-relaxed mb-6">
+                  <p className="text-xs text-slate-400 leading-relaxed mb-6">
                     {svc.description}
                   </p>
                 </div>
 
                 <Link
                   to={isSignedIn ? svc.link : '/sign-up'}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors pt-2"
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-300 hover:text-white transition-colors"
                 >
-                  <span>Explore Feature</span>
-                  <ArrowRight className="h-3.5 w-3.5" />
+                  <span>Launch module</span>
+                  <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
             ))}
@@ -199,31 +285,31 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* How it Works */}
-      <section className="py-20 border-t border-white/5 relative z-10">
+      {/* Sequential Process */}
+      <section className="py-16 sm:py-20 border-b border-white/8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold font-heading text-white mb-3">
-              How It Works
+          <div className="max-w-xl mb-12">
+            <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-white mb-2">
+              Assessment sequence
             </h2>
-            <p className="text-slate-400 text-sm sm:text-base">
-              Four steps from configuration to job-ready confidence.
+            <p className="text-xs sm:text-sm text-slate-400">
+              Four structured milestones from scenario configuration to job offer readiness.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {steps.map((step, idx) => (
               <div
                 key={idx}
-                className="glass-panel rounded-2xl p-6 border border-white/5 relative"
+                className="glass-panel rounded-xl p-5 border border-white/8"
               >
-                <span className="text-4xl font-extrabold font-heading text-indigo-500/30 block mb-4">
-                  {step.number}
+                <span className="text-xs font-mono text-slate-500 block mb-3">
+                  Step {step.number}
                 </span>
-                <h4 className="text-lg font-bold text-white font-heading mb-2">
+                <h4 className="text-sm font-semibold text-white mb-1.5">
                   {step.title}
                 </h4>
-                <p className="text-sm text-slate-400 leading-relaxed">
+                <p className="text-xs text-slate-400 leading-relaxed">
                   {step.description}
                 </p>
               </div>
@@ -233,19 +319,19 @@ const LandingPage = () => {
       </section>
 
       {/* Pricing Section */}
-      <PricingSection className="border-t border-white/5 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full" />
+      <PricingSection className="border-b border-white/8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full py-16" />
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-white/10 py-10 relative z-10 glass-panel">
+      <footer className="py-8 bg-[#0c0e14]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
-            <Award className="h-5 w-5 text-indigo-400" />
-            <span className="text-sm font-bold text-white font-heading">
-              PrepAI Suite
+            <Terminal className="h-4 w-4 text-slate-400" />
+            <span className="text-xs font-semibold text-white">
+              PrepAI Assessment Platform
             </span>
           </div>
-          <p className="text-xs text-slate-500">
-            © {new Date().getFullYear()} PrepAI. All rights reserved. Powered by Google Gemini.
+          <p className="text-xs font-mono text-slate-500">
+            © {new Date().getFullYear()} PrepAI. Designed for engineering assessment.
           </p>
         </div>
       </footer>

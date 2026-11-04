@@ -3,7 +3,7 @@ import { incrementQuota } from '../services/usage.service.js';
 import {
   generateInterviewQuestions,
   evaluateInterviewAnswer,
-} from '../services/gemini.service.js';
+} from '../services/gemini/geminiMock.service.js';
 import ApiError from '../utils/ApiError.js';
 import ApiResponse from '../utils/ApiResponse.js';
 

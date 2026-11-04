@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import { clerkMiddleware } from '@clerk/express';
+import { clerkMiddleware, getAuth } from '@clerk/express';
 
 import { generalLimiter } from './middleware/rateLimiter.middleware.js';
 import errorHandler from './middleware/errorHandler.middleware.js';
@@ -55,15 +55,32 @@ const hasClerkKeys = Boolean(
 
 if (hasClerkKeys) {
   app.use(clerkMiddleware());
+  app.use((req, res, next) => {
+    try {
+      const authData = getAuth(req) || {};
+      const authFn = () => authData;
+      Object.assign(authFn, authData);
+      Object.defineProperty(req, 'auth', {
+        value: authFn,
+        writable: true,
+        configurable: true,
+        enumerable: true,
+      });
+    } catch {
+      // ignore
+    }
+    next();
+  });
 } else {
   app.use((req, res, next) => {
-    req.auth = req.auth || {
+    const demoData = {
       userId: 'demo_user_001',
       sessionClaims: {
         email: 'candidate@demo.com',
         name: 'Demo Candidate',
       },
     };
+    req.auth = Object.assign(() => demoData, demoData);
     next();
   });
 }

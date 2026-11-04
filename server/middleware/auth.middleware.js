@@ -1,57 +1,42 @@
 import User from '../models/User.model.js';
 import ApiError from '../utils/ApiError.js';
-import { requireAuth } from '@clerk/express';
 
-/**
- * Authentication check that supports both live Clerk and safe Development Demo Mode.
- */
+const attachDemoAuth = (req, clerkUserId = 'demo_user_001') => {
+  const demoData = {
+    userId: clerkUserId,
+    sessionClaims: {
+      email: 'candidate@demo.com',
+      name: 'Demo Candidate',
+    },
+  };
+  req.auth = Object.assign(() => demoData, demoData);
+};
+
 /**
  * Authentication check that supports both live Clerk and safe Development Demo Mode.
  */
 export const requireAuthOrDemo = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const userId = typeof req.auth === 'function' ? req.auth()?.userId : req.auth?.userId;
 
-  // If a Bearer token is provided and Clerk is configured, authenticate via Clerk
+  // 1. Authenticated user from Clerk
+  if (userId) {
+    return next();
+  }
+
+  // 2. Safe development / demo mode fallback
   const hasClerkSecret = Boolean(
     process.env.CLERK_SECRET_KEY &&
       !process.env.CLERK_SECRET_KEY.includes('...') &&
       process.env.CLERK_SECRET_KEY.startsWith('sk_')
   );
 
-  if (hasClerkSecret && authHeader && authHeader.startsWith('Bearer ')) {
-    return requireAuth()(req, res, (err) => {
-      if (err) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.warn('Clerk auth failed, falling back to demo user:', err.message);
-          req.auth = {
-            userId: 'demo_user_001',
-            sessionClaims: {
-              email: 'candidate@demo.com',
-              name: 'Demo Candidate',
-            },
-          };
-          return next();
-        }
-        return next(err);
-      }
-      next();
-    });
-  }
-
-  // If no auth token provided and in development/demo mode
   if (process.env.NODE_ENV !== 'production' || !hasClerkSecret) {
-    req.auth = {
-      userId: 'demo_user_001',
-      sessionClaims: {
-        email: 'candidate@demo.com',
-        name: 'Demo Candidate',
-      },
-    };
+    attachDemoAuth(req);
     return next();
   }
 
-  // In production with Clerk configured
-  return requireAuth()(req, res, next);
+  // 3. Unauthenticated in production
+  return next(ApiError.unauthorized('Authentication required'));
 };
 
 /**
@@ -60,23 +45,18 @@ export const requireAuthOrDemo = (req, res, next) => {
  */
 const ensureUser = async (req, res, next) => {
   try {
-    let clerkUserId = req.auth?.userId;
+    let clerkUserId = typeof req.auth === 'function' ? req.auth()?.userId : req.auth?.userId;
 
     if (!clerkUserId) {
       if (
         !process.env.CLERK_SECRET_KEY ||
-        process.env.CLERK_SECRET_KEY.includes('...')
+        process.env.CLERK_SECRET_KEY.includes('...') ||
+        process.env.NODE_ENV !== 'production'
       ) {
         clerkUserId = 'demo_user_001';
-        req.auth = {
-          userId: clerkUserId,
-          sessionClaims: {
-            email: 'candidate@demo.com',
-            name: 'Demo Candidate',
-          },
-        };
+        attachDemoAuth(req, clerkUserId);
       } else {
-        return next(ApiError.unauthorized());
+        return next(ApiError.unauthorized('Authentication required'));
       }
     }
 
@@ -84,7 +64,8 @@ const ensureUser = async (req, res, next) => {
     let user = await User.findOne({ clerkUserId });
 
     if (!user) {
-      const sessionClaims = req.auth?.sessionClaims || {};
+      const authObj = typeof req.auth === 'function' ? req.auth() : (req.auth || {});
+      const sessionClaims = authObj.sessionClaims || {};
 
       user = await User.create({
         clerkUserId,

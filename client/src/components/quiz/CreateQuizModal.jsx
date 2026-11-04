@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import Modal from '../common/Modal.jsx';
 import Button from '../common/Button.jsx';
 import {
@@ -42,90 +42,91 @@ const CreateQuizModal = ({ isOpen, onClose, onSubmit, submitting }) => {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Configure Smart MCQ Assessment"
+      title="Configure Assessment Parameters"
+      description="Select technical domain and telemetry constraints for adaptive question generation."
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 pt-1">
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-            Assessment Topic
+          <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+            Assessment Domain *
           </label>
           <select
             value={form.topic}
             onChange={(e) => setForm({ ...form, topic: e.target.value })}
-            className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors"
+            className="w-full bg-[#12151e] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/30 transition-colors"
           >
             {QUIZ_TOPICS.map((t) => (
-              <option key={t.value} value={t.value}>
+              <option key={t.value} value={t.value} className="bg-[#12151e] text-white">
                 {t.label}
               </option>
             ))}
-            <option value="custom">Custom Specialized Domain...</option>
+            <option value="custom" className="bg-[#12151e] text-white">Custom Domain...</option>
           </select>
         </div>
 
         {form.topic === 'custom' && (
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-              Custom Topic Name
+            <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+              Custom Domain Identifier
             </label>
             <input
               type="text"
-              placeholder="e.g. Next.js App Router & SSR, Kafka Streaming..."
+              placeholder="e.g. Distributed Consensus & Raft, PostgreSQL Internals..."
               value={form.customTopic}
               onChange={(e) => setForm({ ...form, customTopic: e.target.value })}
               required
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full bg-[#12151e] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/30 transition-colors"
             />
           </div>
         )}
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-            Tech Stack Focus <span className="text-slate-500 font-normal">(Optional)</span>
+          <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+            Tech Stack Focus <span className="text-slate-500 font-normal lowercase">(optional)</span>
           </label>
           <input
             type="text"
-            placeholder="e.g. React 18, Node 20, PostgreSQL, Redis"
+            placeholder="e.g. React 19, Node.js 22, PostgreSQL, Redis"
             value={form.techStack}
             onChange={(e) => setForm({ ...form, techStack: e.target.value })}
-            className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+            className="w-full bg-[#12151e] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/30 transition-colors"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-            Key Concepts / Focus Areas <span className="text-slate-500 font-normal">(Optional)</span>
+          <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+            Key Concepts / Edge Cases <span className="text-slate-500 font-normal lowercase">(optional)</span>
           </label>
           <input
             type="text"
             placeholder="e.g. Concurrency, Custom Hooks, Indexing, Memory Leaks"
             value={form.focusAreas}
             onChange={(e) => setForm({ ...form, focusAreas: e.target.value })}
-            className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+            className="w-full bg-[#12151e] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/30 transition-colors"
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+            <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
               Difficulty
             </label>
             <select
               value={form.difficulty}
               onChange={(e) => setForm({ ...form, difficulty: e.target.value })}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full bg-[#12151e] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/30 transition-colors"
             >
               {DIFFICULTY_LEVELS.map((d) => (
-                <option key={d.value} value={d.value}>
+                <option key={d.value} value={d.value} className="bg-[#12151e] text-white">
                   {d.label}
                 </option>
               ))}
-              <option value="mixed">Mixed Adaptive</option>
+              <option value="mixed" className="bg-[#12151e] text-white">Mixed Adaptive</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
+            <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
               Number of Questions
             </label>
             <select
@@ -133,10 +134,10 @@ const CreateQuizModal = ({ isOpen, onClose, onSubmit, submitting }) => {
               onChange={(e) =>
                 setForm({ ...form, numberOfQuestions: Number(e.target.value) })
               }
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors"
+              className="w-full bg-[#12151e] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/30 transition-colors"
             >
               {QUIZ_QUESTION_COUNTS.map((count) => (
-                <option key={count} value={count}>
+                <option key={count} value={count} className="bg-[#12151e] text-white">
                   {count} Questions
                 </option>
               ))}
@@ -145,37 +146,37 @@ const CreateQuizModal = ({ isOpen, onClose, onSubmit, submitting }) => {
         </div>
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-            Timer Limit (Minutes)
+          <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+            Timer Limit
           </label>
           <select
             value={form.timeLimitMinutes}
             onChange={(e) =>
               setForm({ ...form, timeLimitMinutes: Number(e.target.value) })
             }
-            className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors"
+            className="w-full bg-[#12151e] border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/30 transition-colors font-mono"
           >
-            <option value={5}>5 Minutes (Speed Run)</option>
-            <option value={10}>10 Minutes (Standard)</option>
-            <option value={15}>15 Minutes (Comprehensive)</option>
-            <option value={20}>20 Minutes (Deep Dive)</option>
+            <option value={5} className="bg-[#12151e] text-white">5 Minutes (Sprint)</option>
+            <option value={10} className="bg-[#12151e] text-white">10 Minutes (Standard)</option>
+            <option value={15} className="bg-[#12151e] text-white">15 Minutes (Comprehensive)</option>
+            <option value={20} className="bg-[#12151e] text-white">20 Minutes (Deep Diagnostic)</option>
           </select>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
-            Custom Title <span className="text-slate-500 font-normal">(Optional)</span>
+          <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-400 mb-1">
+            Session Title <span className="text-slate-500 font-normal lowercase">(optional)</span>
           </label>
           <input
             type="text"
-            placeholder="e.g. Senior Frontend Diagnostic"
+            placeholder="e.g. Senior Frontend Diagnostic Sprint"
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
-            className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+            className="w-full bg-[#12151e] border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-white/30 transition-colors"
           />
         </div>
 
-        <div className="pt-4 flex items-center justify-end gap-3 border-t border-white/10">
+        <div className="pt-3 flex items-center justify-end gap-2.5 border-t border-white/8">
           <Button
             type="button"
             variant="secondary"
@@ -187,9 +188,10 @@ const CreateQuizModal = ({ isOpen, onClose, onSubmit, submitting }) => {
             type="submit"
             variant="primary"
             loading={submitting}
-            icon={Sparkles}
+            icon={ArrowRight}
+            iconPosition="right"
           >
-            {submitting ? 'Generating AI Questions...' : 'Start Assessment'}
+            {submitting ? 'Synthesizing Questions...' : 'Start Assessment'}
           </Button>
         </div>
       </form>
